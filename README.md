@@ -402,7 +402,16 @@
   <summary> Convenience init에 대해 설명하시오. </summary>
   
   ```
+  초기화의 두 가지 종류
   
+  - Designated init : 클래스의 모든 프로퍼티 초기화
+    init(_ a: String, _ b: String, _ c: String) { 
+    }
+   
+  - Convenience init : Designated init의 파라미터 중 일부를 초기화
+    convenience init( _ b: String, _ c: String) {
+      self.init("a", b, c)
+    }
   ```
   
 </details>
@@ -411,6 +420,7 @@
   <summary> AnyObject에 대해 설명하시오. </summary>
   
   ```
+  AnyObject : 모든 클래스 타입을 나타낼 수 있는 프로토콜 
   
   ```
   
@@ -429,7 +439,7 @@
   <summary> Struct 가 무엇이고 어떻게 사용하는지 설명하시오. </summary>
   
   ```
-  
+  Struct: 인스턴스의 값(프로퍼티)을 저장하거나, 기능(메소드)를 제공하고 이를 캡슐화할 수 있는 타입
   ```
   
 </details>
@@ -477,6 +487,18 @@
   <summary> Singleton 패턴을 활용하는 경우를 예를 들어 설명하시오. </summary>
   
   ```
+  iOS에서 Singleton 활용하는 경우 : NotificationCenter, UserDefault, URLCache, URLSession 등
+  
+  - Singleton의 장점
+  1. 인스턴스를 1회만 생성하므로 메모리, 성능 측면에서 효율이 좋다.
+  2. 클래스간 데이터 공유가 쉽다.
+  3. 인스턴스가 하나라는 것을 보장 -> Thread safe
+  
+  - Singleton의 단점
+  1. 전역적으로 접근할 수 있기 때문에 이에 접근하는 객체를 추적하기 어려워지는 경우가 생긴다.
+  
+  - Singleton 대안 : DI(의존성 주입)
+  
   ```
   
 </details>
@@ -485,14 +507,29 @@
   <summary> KVO 동작 방식에 대해 설명하시오.  </summary>
   
   ```
+  KVO(= Key-Value Observing) : 다른 객체의 속성이 변경될 때 객체가 직접 알림을 받을 수 있는 메커니즘
+  
+  - NSObject를 상속받은 객체에서만 사용 가능
+  - Objective-C Runtime에서만 사용이 가능하고, @objc dynamic 붙여서 사용
+  - didSet, willSet과 유사하게 동작
   ```
   
 </details>
 
 <details> 
-  <summary> Delegates와 Notification 방식의 차이점에 대해 설명하시오.  </summary>
+  <summary> Delegate와 Notification 방식의 차이점에 대해 설명하시오.  </summary>
   
   ```
+  Delegate : 지정된 객체가 해야하는 메소드들의 원형을 프로토콜 형태로 정해놓은 디자인 패턴
+  Notification : 서로 데이터를 보내주고 통신할 수 있도록 하기 위해 Notification Center라는 싱글톤 객체를 통해 
+  이벤트들의 발생 여부를 옵저버를 등록한 객체들에게 알려주는 것
+  
+  공통점 : 앱에서 발생한 이벤트가 현재 화면이 아닌 다른 화면까지 영향을 주어야할 때 주로 사용
+  
+  차이점
+  - Delegate : 이벤트의 수신자가 발신자의 정보를 알고 있어야함
+  - Notification : 이벤트의 수신자가 발신자의 정보를 몰라도 됨
+  
   ```
   
 </details>
@@ -525,6 +562,16 @@
   <summary> Protocol Oriented Programming과 Object Oriented Programming의 차이점을 설명하시오. </summary>
   
   ```
+  POP : 프로토콜 중심 프로그래밍
+  - 프로토콜 확장을 통한 수평 구조의 타입 확장
+  - HAS-A 관계로 표현됩
+  
+  OOP : 객체 중심 프로그래밍
+  - 상속을 통하 수직 구조의 타입 확장
+  - IS-A 관계 표현
+  
+  Is - A 관계 : 부모 - 자식 간의 상속 관계
+  Has - A 관계 : 보유한 기능을 표현하는 포함 관계 
   ```
   
 </details>
@@ -573,6 +620,7 @@
   <summary> 접근 제어자의 종류엔 어떤게 있는지 설명하시오. </summary>
   
   ```
+  
   ```
   
 </details>
@@ -654,6 +702,8 @@
   <summary> Swift에서 Async/Await 기능이 도입되기 전에, 비동기(Asynchronous) 작업을 처리하는 방법에는 어떤 것들이 있나요? </summary>
   
   ```
+  Closure 및 completion handler를 사용하여 비동기 작업 처리함
+  
   ```
   
 </details>
@@ -676,11 +726,66 @@
 </details>
 
 ## ARC
-- ARC란 무엇인지 설명하시오.
-- Retain Count 방식에 대해 설명하시오.
-- Strong 과 Weak 참조 방식에 대해 설명하시오.
-- 순환 참조에 대하여 설명하시오.
-- 강한 순환 참조 (Strong Reference Cycle) 는 어떤 경우에 발생하는지 설명하시오.
+
+<details> 
+  <summary> ARC란 무엇인지 설명하시오. </summary>
+  
+  ```
+  ARC : Swift가 제공하는 자동 메모리 관리 도구
+  
+  - referece count를 관리하고 0이 되면 자동으로 메모리를 해제
+  ```
+  
+</details>
+
+<details> 
+  <summary> Retain Count 방식에 대해 설명하시오. </summary>
+  
+  ```
+  Retain Count 방식 : MRC, ARC
+  
+  - MRC : 객체의 레퍼런스 카운트를 직접 관리하는 방식 -> retain, release 직접 호출
+  - ARC : 객체의 레퍼런스 카운트를 iOS가 자동 관리하는 방식 -> retain, release 자동 호출
+ 
+  - Retain : NSObject 클래스 함수로 객체가 메모리에서 해제되지 않도록 래퍼런스 카운트를 증가시킴
+  - Release : NSObject 클래스 함수로 객체를 더이상 사용하지 않거나, 메모리에서 해제하고 싶을 때 호출하여 래퍼런스 카운트 감소시킴
+  ```
+  
+</details>
+
+<details> 
+  <summary> Strong 과 Weak 참조 방식에 대해 설명하시오. </summary>
+  
+  ```
+  강한 참조 : 인스턴스의 주소값이 변수에 할당될 때 RC가 증가하는 참조 방식
+  - 인스턴스를 생성할 때 default가 강한 참조
+  - 순환참조 발생할 수 있음 -> 발생 시 메모리 누수 발생
+  
+  약한 참조 : 인스턴스를 참조할 때 RC를 증가시키지 않는 참조 방식
+  - 강한 순화 참조를 해결할 수 있음
+  ```
+  
+</details>
+
+<details> 
+  <summary> 순환 참조에 대하여 설명하시오. </summary>
+  
+  ```
+  순환 참조 : 두 개의 객체가 서로가 서로를 참조하고 있는 형태
+  - 메모리 누수 발생 
+  ```
+  
+</details>
+
+<details> 
+  <summary> 강한 순환 참조 (Strong Reference Cycle) 는 어떤 경우에 발생하는지 설명하시오. </summary>
+  
+  ```
+  - 클래스 인스턴스 간의 강한 순환 참조
+  - 클로저에서의 강한 순환 참조
+  ```
+  
+</details>
 
 ## Functional Programming
 - 순수함수란 무엇인지 설명하시오.
